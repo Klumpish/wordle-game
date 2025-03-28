@@ -6,16 +6,27 @@ import Navigation from "./components/Navigation"
 
 function App() {
 	return (
-		<Router>
-			<Navigation />
-			<main>
-				<Routes>
-					<Route path="/" element={<GamePage />} />
-					<Route path="/about" element={<AboutPage />} />
-					<Route path="/highscores" element={<HighscoresPage />} />
-				</Routes>
-			</main>
-		</Router>
+		<>
+			<Router>
+				<Navigation />
+				<main>
+					<Routes>
+						<Route
+							path="/"
+							element={<GamePage />}
+						/>
+						<Route
+							path="/about"
+							element={<AboutPage />}
+						/>
+						<Route
+							path="/highscores"
+							element={<HighscoresPage />}
+						/>
+					</Routes>
+				</main>
+			</Router>
+		</>
 	)
 }
 

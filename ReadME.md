@@ -71,6 +71,10 @@
     npm install nodemon --save-dev
     cd ..
 
+### Material UI - Install
+
+    1. npm install @mui/material @emotion/react @emotion/styled
+
 ## Problems
 
 - config of vite and express server.
