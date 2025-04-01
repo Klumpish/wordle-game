@@ -28,9 +28,6 @@ function GamePage() {
 	const handleChange = (event) => {
 		setWordLength(event.target.value)
 	}
-	const handleCharRepeat = (event) => {
-		setRepeatingChar(event.target.value === "true")
-	}
 
 	//
 	const handleStartGame = async (e) => {
@@ -58,7 +55,6 @@ function GamePage() {
 		} catch (error) {
 			console.log("Error:", error)
 		}
-		// setTargetWord("CYKEL")
 		setGuesses([])
 		setGameStarted(true)
 		setStartTime(new Date().getTime())
@@ -131,7 +127,7 @@ function GamePage() {
 			const timeTaken = (endTime - startTime) / 1000 //calc time taken in seconds
 
 			const numGuesses = guesses.length
-
+			console.log(repeatingChar + "before sending to highscore")
 			const response = await fetch("/api/highscores", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
@@ -201,12 +197,14 @@ function GamePage() {
 					<Select
 						labelId="repeatingChars"
 						id="repeatingCharsSelect"
-						value={repeatingChar}
+						value={String(repeatingChar)}
 						label="Flera av samma bokstav"
-						onChange={handleCharRepeat}
+						onChange={(event) =>
+							setRepeatingChar(event.target.value === "true")
+						}
 						sx={{ height: 56 }}>
-						<MenuItem value={true}>Ja</MenuItem>
-						<MenuItem value={false}>Nej</MenuItem>
+						<MenuItem value="true">Ja</MenuItem>
+						<MenuItem value="false">Nej</MenuItem>
 					</Select>
 				</FormControl>
 				<Button
@@ -218,7 +216,7 @@ function GamePage() {
 				</Button>
 			</form>
 
-			{targetWord && (
+			{gameStarted && (
 				<form onSubmit={handleGuessSubmit}>
 					<TextField
 						value={userGuess}
@@ -236,7 +234,7 @@ function GamePage() {
 				</form>
 			)}
 
-			{/* display feedback */}
+			{/* display all guesses */}
 			{guesses.length > 0 && (
 				<div style={{ marginTop: "20px" }}>
 					{guesses.map((entry, rowIndex) => (
@@ -263,6 +261,24 @@ function GamePage() {
 						</div>
 					))}
 				</div>
+			)}
+			{/* highscore submission form */}
+			{gameEnded && (
+				<form onSubmit={handleSubmitHighscore}>
+					<TextField
+						value={userName}
+						onChange={(e) => setUserName(e.target.value)}
+						label="Ditt namn"
+						variant="outlined"
+						sx={{ mt: 2 }}
+					/>
+					<Button
+						type="submit"
+						variant="contained"
+						sx={{ mt: 3, ml: 1 }}>
+						Skicka in highscore
+					</Button>
+				</form>
 			)}
 		</Container>
 	)

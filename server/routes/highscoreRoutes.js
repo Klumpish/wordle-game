@@ -1,9 +1,8 @@
 import express from "express"
-import { getRandomWord, submitGuess } from "../controllers/gameController.js"
+import { submitHighscore } from "../controllers/highscoreController.js"
 
 const router = express.Router()
 
-router.get("/random-word", getRandomWord)
-router.post("/submit-guess", submitGuess)
+router.post("/", submitHighscore)
 
 export default router
