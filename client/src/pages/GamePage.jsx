@@ -23,7 +23,7 @@ function GamePage() {
 	const [gameEnded, setGameEnded] = useState(false) // checks if game ended
 	const [startTime, setStartTime] = useState(null) // tack start time of game
 
-	const theme = useTheme()
+	// const theme = useTheme()
 
 	const handleChange = (event) => {
 		setWordLength(event.target.value)
@@ -57,6 +57,8 @@ function GamePage() {
 		}
 		setGuesses([])
 		setGameStarted(true)
+		setGameEnded(false)
+		setUserName("")
 		setStartTime(new Date().getTime())
 	}
 
@@ -145,6 +147,10 @@ function GamePage() {
 				console.log("Highscore submitted:", data)
 				//TODO fix later
 				alert("Tack för att du spelade!")
+				setGameStarted(false)
+				setGameEnded(false)
+				setGuesses([])
+				setUserName("")
 			} else {
 				console.error("Error submitting highscore:", data.message)
 			}
@@ -163,75 +169,91 @@ function GamePage() {
 				flexDirection: "column",
 				alignItems: "center",
 			}}>
-			<h1>Var snäll och välj inställningarna för ditt spel</h1>
-			<form
-				onSubmit={handleStartGame}
-				style={{
-					display: "flex",
-					flexDirection: "column",
-					width: "45%",
-				}}>
-				<FormControl
-					fullWidth
-					required
-					sx={{ maxWidth: 400, minWidth: 100, mb: 2 }}>
-					<InputLabel id="wordLength">Antal Ord</InputLabel>
-					<Select
-						labelId="wordLength"
-						id="wordLengthSelect"
-						value={wordLength}
-						label="antal bokstäver"
-						onChange={handleChange}
-						sx={{ height: 56 }}>
-						<MenuItem value={4}>4</MenuItem>
-						<MenuItem value={5}>5</MenuItem>
-						<MenuItem value={6}>6</MenuItem>
-						<MenuItem value={7}>7</MenuItem>
-					</Select>
-				</FormControl>
-				<FormControl
-					fullWidth
-					required
-					sx={{ maxWidth: 400, minWidth: 100, mb: 2 }}>
-					<InputLabel id="repeatingChars">Flera av samma bokstav</InputLabel>
-					<Select
-						labelId="repeatingChars"
-						id="repeatingCharsSelect"
-						value={String(repeatingChar)}
-						label="Flera av samma bokstav"
-						onChange={(event) =>
-							setRepeatingChar(event.target.value === "true")
-						}
-						sx={{ height: 56 }}>
-						<MenuItem value="true">Ja</MenuItem>
-						<MenuItem value="false">Nej</MenuItem>
-					</Select>
-				</FormControl>
-				<Button
-					type="submit"
-					variant="contained"
-					size="large"
-					sx={{ maxWidth: 400, minWidth: 100, mb: 2 }}>
-					Start
-				</Button>
-			</form>
-
+			{!gameStarted && (
+				<>
+					<Typography
+						variant="h4"
+						sx={{ mt: 2 }}>
+						Välj inställningarna för ditt spel
+					</Typography>
+					<form
+						onSubmit={handleStartGame}
+						style={{
+							display: "flex",
+							flexDirection: "column",
+							width: "45%",
+						}}>
+						<FormControl
+							fullWidth
+							required
+							sx={{ maxWidth: 400, minWidth: 100, mb: 2 }}>
+							<InputLabel id="wordLength">Antal Ord</InputLabel>
+							<Select
+								labelId="wordLength"
+								id="wordLengthSelect"
+								value={wordLength}
+								label="antal bokstäver"
+								onChange={handleChange}
+								sx={{ height: 56 }}>
+								<MenuItem value={4}>4</MenuItem>
+								<MenuItem value={5}>5</MenuItem>
+								<MenuItem value={6}>6</MenuItem>
+								<MenuItem value={7}>7</MenuItem>
+							</Select>
+						</FormControl>
+						<FormControl
+							fullWidth
+							required
+							sx={{ maxWidth: 400, minWidth: 100, mb: 2 }}>
+							<InputLabel id="repeatingChars">
+								Flera av samma bokstav
+							</InputLabel>
+							<Select
+								labelId="repeatingChars"
+								id="repeatingCharsSelect"
+								value={String(repeatingChar)}
+								label="Flera av samma bokstav"
+								onChange={(event) =>
+									setRepeatingChar(event.target.value === "true")
+								}
+								sx={{ height: 56 }}>
+								<MenuItem value="true">Ja</MenuItem>
+								<MenuItem value="false">Nej</MenuItem>
+							</Select>
+						</FormControl>
+						<Button
+							type="submit"
+							variant="contained"
+							size="large"
+							sx={{ maxWidth: 400, minWidth: 100, mb: 2 }}>
+							Start
+						</Button>
+					</form>
+				</>
+			)}
 			{gameStarted && (
-				<form onSubmit={handleGuessSubmit}>
-					<TextField
-						value={userGuess}
-						onChange={(e) => setUserGuess(e.target.value.toUpperCase())} //make guess uppercase
-						label="Gissa ordet"
-						variant="outlined"
-						sx={{ mt: 2, mb: 2 }}
-					/>
-					<Button
-						type="submit"
-						variant="contained"
-						sx={{ mt: 3, ml: 1 }}>
-						Gissa!
-					</Button>
-				</form>
+				<>
+					<Typography
+						variant="h4"
+						sx={{ mt: 2 }}>
+						Gissa ordet!
+					</Typography>
+					<form onSubmit={handleGuessSubmit}>
+						<TextField
+							value={userGuess}
+							onChange={(e) => setUserGuess(e.target.value.toUpperCase())} //make guess uppercase
+							label="Gissa ordet"
+							variant="outlined"
+							sx={{ mt: 2, mb: 2 }}
+						/>
+						<Button
+							type="submit"
+							variant="contained"
+							sx={{ mt: 3, ml: 1 }}>
+							Gissa!
+						</Button>
+					</form>
+				</>
 			)}
 
 			{/* display all guesses */}
@@ -267,6 +289,7 @@ function GamePage() {
 				<form onSubmit={handleSubmitHighscore}>
 					<TextField
 						value={userName}
+						autoFocus={true}
 						onChange={(e) => setUserName(e.target.value)}
 						label="Ditt namn"
 						variant="outlined"

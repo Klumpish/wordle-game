@@ -1,50 +1,87 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import {
 	Container,
 	Typography,
 	Table,
 	TableBody,
 	TableCell,
-	TableContainer,
 	TableHead,
 	TableRow,
-	Paper,
-	Box,
-	CircularProgress,
+	Pagination,
 } from "@mui/material"
-// import { Trophy } from "@mui/icons-material"
-import EmojiEventsIcon from "@mui/icons-material/EmojiEvents"
+import { Value } from "sass"
 
-function HighscoresPage() {
-	// Sample data - replace with actual data from the server
-	// const highscores = [
-	// 	{ id: 1, name: "Player 1", score: 100, date: "2023-05-15" },
-	// 	{ id: 2, name: "Player 2", score: 95, date: "2023-05-16" },
-	// 	{ id: 3, name: "Player 3", score: 90, date: "2023-05-17" },
-	// 	{ id: 4, name: "Player 4", score: 85, date: "2023-05-18" },
-	// 	{ id: 5, name: "Player 5", score: 80, date: "2023-05-19" },
-	// ]
+function HighscorePage() {
+	const [highscores, setHighscores] = useState([])
+	const [currentPage, setCurrentPage] = useState(1)
+	const itemsPerPage = 10 //visar 10 scores per sida
 
-	// For loading state example
-	// const [loading, setLoading] = React.useState(false)
+	useEffect(() => {
+		// Fetch highscores from backend
+		const fetchHighscores = async () => {
+			try {
+				const response = await fetch("/api/highscores")
+
+				const data = await response.json()
+				if (response.ok) {
+					setHighscores(data.data) // Update state with fetched highscores
+				} else {
+					console.error("Error fetching highscores:", data.message)
+				}
+			} catch (error) {
+				console.error("Network error fetching highscores:", error)
+			}
+		}
+
+		fetchHighscores()
+	}, [])
+
+	const handlePageChange = (event, value) => {
+		setCurrentPage(value)
+	}
+
+	const startIndex = (currentPage - 1) * itemsPerPage
+	const endIndex = startIndex + itemsPerPage
 
 	return (
-		<Container
-			maxWidth="md"
-			sx={{ mt: 4 }}>
-			<Box sx={{ display: "flex", alignItems: "center", mb: 4 }}>
-				<EmojiEventsIcon
-					color="primary"
-					sx={{ fontSize: 40, mr: 2 }}
-				/>
-				<Typography
-					variant="h3"
-					component="h1">
-					Highscores
-				</Typography>
-			</Box>
+		<Container>
+			<Typography
+				variant="h4"
+				sx={{ mt: 2 }}>
+				Highscores
+			</Typography>
+			<Table sx={{ mt: 2 }}>
+				<TableHead>
+					<TableRow>
+						<TableCell>Rank</TableCell>
+						<TableCell>Name</TableCell>
+						<TableCell>Time (s)</TableCell>
+						<TableCell>Guesses</TableCell>
+						<TableCell>Word Length</TableCell>
+						<TableCell>Repeating Characters</TableCell>
+					</TableRow>
+				</TableHead>
+				<TableBody>
+					{highscores.slice(startIndex, endIndex).map((highscore, index) => (
+						<TableRow key={index}>
+							<TableCell>{startIndex + index + 1}</TableCell>
+							<TableCell>{highscore.name}</TableCell>
+							<TableCell>{highscore.time}</TableCell>
+							<TableCell>{highscore.guesses}</TableCell>
+							<TableCell>{highscore.wordLength}</TableCell>
+							<TableCell>{highscore.repeatingChar ? "Yes" : "No"}</TableCell>
+						</TableRow>
+					))}
+				</TableBody>
+			</Table>
+			<Pagination
+				count={Math.ceil(highscores.length / itemsPerPage)}
+				page={currentPage}
+				onChangePage={handlePageChange}
+				sx={{ mt: 2 }}
+			/>
 		</Container>
 	)
 }
 
-export default HighscoresPage
+export default HighscorePage

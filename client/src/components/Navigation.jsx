@@ -46,7 +46,7 @@ function Navigation() {
 	const navItems = [
 		{ text: "Game", to: "/", end: true, icon: <SportsEsportsIcon /> },
 		{ text: "About", to: "/about", icon: <InfoOutlineIcon /> },
-		{ text: "High Score", to: "/highscore", icon: <EmojiFlagsIcon /> },
+		{ text: "High Score", to: "/highscores", icon: <EmojiFlagsIcon /> },
 	]
 
 	// Menu component for mobile

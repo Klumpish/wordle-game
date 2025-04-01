@@ -1,1 +1,72 @@
-[]
+[
+  {
+    "name": "heffa",
+    "time": 7.336,
+    "guesses": 1,
+    "wordLength": 5,
+    "repeatingChar": true
+  },
+  {
+    "name": "adfg",
+    "time": 11.173,
+    "guesses": 2,
+    "wordLength": 5,
+    "repeatingChar": true
+  },
+  {
+    "name": "Heffa",
+    "time": 11.709,
+    "guesses": 1,
+    "wordLength": 5,
+    "repeatingChar": true
+  },
+  {
+    "name": "bravo",
+    "time": 11.954,
+    "guesses": 2,
+    "wordLength": 5,
+    "repeatingChar": true
+  },
+  {
+    "name": "Player1",
+    "time": 12.34,
+    "guesses": 5,
+    "wordLength": 5,
+    "repeatingChar": true
+  },
+  {
+    "name": "af",
+    "time": 21.635,
+    "guesses": 1,
+    "wordLength": 5,
+    "repeatingChar": true
+  },
+  {
+    "name": "adfg",
+    "time": 62.114,
+    "guesses": 2,
+    "wordLength": 5,
+    "repeatingChar": true
+  },
+  {
+    "name": "adfg",
+    "time": 88.677,
+    "guesses": 2,
+    "wordLength": 5,
+    "repeatingChar": true
+  },
+  {
+    "name": "adfg",
+    "time": 242.02,
+    "guesses": 1,
+    "wordLength": 5,
+    "repeatingChar": true
+  },
+  {
+    "name": "adfg",
+    "time": 630.552,
+    "guesses": 1,
+    "wordLength": 5,
+    "repeatingChar": true
+  }
+]
