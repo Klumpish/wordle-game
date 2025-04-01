@@ -1,12 +1,8 @@
 import express from "express"
 import path from "path"
-import { fileURLToPath } from "url"
-import cors from "cors" // Add this import
+import cors from "cors"
 import gameRoutes from "./routes/gameRoutes.js"
 import highscoreRoutes from "./routes/highscoreRoutes.js"
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
 
 const app = express()
 const PORT = 5080

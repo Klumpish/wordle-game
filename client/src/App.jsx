@@ -3,29 +3,33 @@ import GamePage from "./pages/GamePage"
 import AboutPage from "./pages/AboutPage"
 import HighscoresPage from "./pages/HighscoresPage"
 import Navigation from "./components/Navigation"
+import { ThemeProvider } from "@mui/material/styles"
+import { theme } from "./assets/theme"
 
 function App() {
 	return (
 		<>
-			<Router>
-				<Navigation />
-				<main>
-					<Routes>
-						<Route
-							path="/"
-							element={<GamePage />}
-						/>
-						<Route
-							path="/about"
-							element={<AboutPage />}
-						/>
-						<Route
-							path="/highscores"
-							element={<HighscoresPage />}
-						/>
-					</Routes>
-				</main>
-			</Router>
+			<ThemeProvider theme={theme}>
+				<Router>
+					<Navigation />
+					<main>
+						<Routes>
+							<Route
+								path="/"
+								element={<GamePage />}
+							/>
+							<Route
+								path="/about"
+								element={<AboutPage />}
+							/>
+							<Route
+								path="/highscores"
+								element={<HighscoresPage />}
+							/>
+						</Routes>
+					</main>
+				</Router>
+			</ThemeProvider>
 		</>
 	)
 }
