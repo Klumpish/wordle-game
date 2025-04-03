@@ -78,3 +78,11 @@
 ## Problems
 
 - config of vite and express server.
+- had some problems with pagination on the highscore list
+
+## SSR of highscore list
+
+- with SRR i can improve performance becouse i only fetch and render the necessary
+  data for each page instead of loading all highscores at once.
+- this will handle large datasets by slicing them on the server
+- SEO optimization, Pre-rendered HTML improves search engine indexing.

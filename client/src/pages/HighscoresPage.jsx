@@ -9,22 +9,25 @@ import {
 	TableRow,
 	Pagination,
 } from "@mui/material"
-import { Value } from "sass"
 
 function HighscorePage() {
 	const [highscores, setHighscores] = useState([])
 	const [currentPage, setCurrentPage] = useState(1)
+	const [totalPages, setTotalPages] = useState(0)
 	const itemsPerPage = 10 //visar 10 scores per sida
 
 	useEffect(() => {
 		// Fetch highscores from backend
 		const fetchHighscores = async () => {
 			try {
-				const response = await fetch("/api/highscores")
+				const response = await fetch(
+					`/api/highscores/paginated?page=${currentPage}&pageSize=${itemsPerPage}`
+				)
 
 				const data = await response.json()
 				if (response.ok) {
 					setHighscores(data.data) // Update state with fetched highscores
+					setTotalPages(data.totalPages) // update total pages
 				} else {
 					console.error("Error fetching highscores:", data.message)
 				}
@@ -34,7 +37,7 @@ function HighscorePage() {
 		}
 
 		fetchHighscores()
-	}, [])
+	}, [currentPage]) //when currentPage change this will fetch again
 
 	const handlePageChange = (event, value) => {
 		setCurrentPage(value)
@@ -62,9 +65,13 @@ function HighscorePage() {
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{highscores.slice(startIndex, endIndex).map((highscore, index) => (
+					{highscores.map((highscore, index) => (
+						// {highscores.slice(startIndex, endIndex).map((highscore, index) => (
 						<TableRow key={index}>
-							<TableCell>{startIndex + index + 1}</TableCell>
+							<TableCell>
+								{(currentPage - 1) * itemsPerPage + index + 1}
+							</TableCell>
+							{/* <TableCell>{startIndex + index + 1}</TableCell> */}
 							<TableCell>{highscore.name}</TableCell>
 							<TableCell>{highscore.time}</TableCell>
 							<TableCell>{highscore.guesses}</TableCell>
@@ -75,7 +82,7 @@ function HighscorePage() {
 				</TableBody>
 			</Table>
 			<Pagination
-				count={Math.ceil(highscores.length / itemsPerPage)}
+				count={totalPages}
 				page={currentPage}
 				onChange={handlePageChange}
 				sx={{ mt: 2 }}

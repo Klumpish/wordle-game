@@ -35,9 +35,23 @@
     "repeatingChar": true
   },
   {
+    "name": "qweqwe",
+    "time": 15.111,
+    "guesses": 1,
+    "wordLength": 5,
+    "repeatingChar": true
+  },
+  {
     "name": "af",
     "time": 21.635,
     "guesses": 1,
+    "wordLength": 5,
+    "repeatingChar": true
+  },
+  {
+    "name": "erer",
+    "time": 39.551,
+    "guesses": 2,
     "wordLength": 5,
     "repeatingChar": true
   },

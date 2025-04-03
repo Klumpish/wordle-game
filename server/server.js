@@ -11,6 +11,11 @@ const isProduction = process.env.NODE_ENV === "production"
 // Middleware
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+// show methods and urls
+app.use((req, res, next) => {
+	console.log(req.method, req.url)
+	next()
+})
 
 // Enable CORS in development
 if (!isProduction) {

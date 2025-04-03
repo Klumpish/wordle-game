@@ -25,7 +25,6 @@ const writeHighscores = (highscores) => {
 }
 
 // submit new highscore
-
 export const submitHighscore = (req, res) => {
 	try {
 		const { name, time, guesses, wordLength, repeatingChar } = req.body
@@ -40,14 +39,6 @@ export const submitHighscore = (req, res) => {
 
 		// save updated highscores to file
 		writeHighscores(highscores)
-
-		// console.log("Highscore submitted:", {
-		// 	name,
-		// 	time,
-		// 	guesses,
-		// 	wordLength,
-		// 	repeatingChar,
-		// })
 
 		res.status(200).json({
 			success: true,
@@ -76,6 +67,33 @@ export const getHighscores = (req, res) => {
 		res.status(500).json({
 			success: false,
 			message: error.message,
+		})
+	}
+}
+
+export const getPaginatedHighscores = (req, res) => {
+	try {
+		// extract page and pageSize
+		const { page = 1, pageSize = 10 } = req.query
+		const highscores = readHighscores()
+
+		const startIndex = (page - 1) * pageSize
+		const endIndex = startIndex + Number(pageSize)
+
+		// slice data for pagination
+		const paginatedData = highscores.slice(startIndex, endIndex)
+		const totalPages = Math.ceil(highscores.length / pageSize)
+
+		res.status(200).json({
+			success: true,
+			data: paginatedData,
+			totalPages,
+		})
+	} catch (error) {
+		console.log("Error fetching paginated highscores:", error)
+		res.status(500).json({
+			success: false,
+			message: "Internal Server Error",
 		})
 	}
 }
