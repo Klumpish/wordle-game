@@ -56,6 +56,13 @@
     "repeatingChar": true
   },
   {
+    "name": "Heffa",
+    "time": 55.476,
+    "guesses": 4,
+    "wordLength": 5,
+    "repeatingChar": true
+  },
+  {
     "name": "adfg",
     "time": 62.114,
     "guesses": 2,

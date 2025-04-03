@@ -187,7 +187,7 @@ function GamePage() {
 							fullWidth
 							required
 							sx={{ maxWidth: 400, minWidth: 100, mb: 2 }}>
-							<InputLabel id="wordLength">Antal Ord</InputLabel>
+							<InputLabel id="wordLength">Antal Bokstäver</InputLabel>
 							<Select
 								labelId="wordLength"
 								id="wordLengthSelect"

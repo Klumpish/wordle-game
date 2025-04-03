@@ -77,8 +77,8 @@
 
 ## Problems
 
-- config of vite and express server.
-- had some problems with pagination on the highscore list
+- config of vite and express server. #FIXED
+- had some problems with pagination on the highscore list #FIXED
 
 ## SSR of highscore list
 
@@ -86,3 +86,10 @@
   data for each page instead of loading all highscores at once.
 - this will handle large datasets by slicing them on the server
 - SEO optimization, Pre-rendered HTML improves search engine indexing.
+
+## TODO
+
+- add squares that shows the game field
+- add a reset button while user is in mid game
+- add a maximum amount of guesses..? yes? no? maybe??
+- add the word list from github

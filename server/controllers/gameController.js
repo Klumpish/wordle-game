@@ -1,4 +1,4 @@
-import wordList from "../data/wordlist.json" assert { type: "json" }
+// import wordList from "../data/wordlist.json" assert { type: "json" }
 
 export const getRandomWord = (req, res) => {
 	// Controller logic here
@@ -8,10 +8,28 @@ export const submitGuess = (req, res) => {
 	// Controller logic here
 }
 
-export const startGame = (req, res) => {
+const fetchWordList = async function () {
+	try {
+		const respons = await fetch(
+			"https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt"
+		)
+		if (respons.ok) {
+			const data = await respons.text()
+			const words = data.split("\n").map((word) => word.trim())
+			return words
+		} else {
+			console.error("Error fetching wordList:", data.message)
+		}
+	} catch (error) {
+		console.error("Network error fetching wordList:", error)
+		return []
+	}
+}
+
+export const startGame = async (req, res) => {
 	try {
 		const { wordLength, repeatingChar } = req.body
-
+		const wordList = await fetchWordList()
 		// Debugging
 		console.log("Received settings:", { wordLength, repeatingChar })
 
@@ -19,7 +37,6 @@ export const startGame = (req, res) => {
 		const filteredWords = wordList.filter((word) => {
 			const meetsLength = word.length === Number(wordLength) //ensure its a number
 			const hasDuplicates = new Set(word).size !== word.length
-			// does it remove  duplicates like hello that have two L
 
 			if (repeatingChar) {
 				return meetsLength && hasDuplicates
@@ -28,8 +45,8 @@ export const startGame = (req, res) => {
 			}
 		})
 
-		//Debugging
-		console.log("filtered words:", filteredWords)
+		//#TODO  Debugging
+		// console.log("filtered words:", filteredWords)
 
 		if (filteredWords.length === 0) {
 			return res.status(400).json({
@@ -42,13 +59,13 @@ export const startGame = (req, res) => {
 		const randomIndex = Math.floor(Math.random() * filteredWords.length)
 		const selectedWord = filteredWords[randomIndex]
 
-		// Debugg
+		// #TODO Debugg
 		console.log("selected word:", selectedWord)
 
 		res.status(200).json({
 			Success: true,
 			message: "Game settings received",
-			word: selectedWord,
+			word: selectedWord.toUpperCase(),
 		})
 	} catch (error) {
 		res.status(500).json({
