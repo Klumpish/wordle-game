@@ -77,7 +77,7 @@ function HighscorePage() {
 			<Pagination
 				count={Math.ceil(highscores.length / itemsPerPage)}
 				page={currentPage}
-				onChangePage={handlePageChange}
+				onChange={handlePageChange}
 				sx={{ mt: 2 }}
 			/>
 		</Container>
