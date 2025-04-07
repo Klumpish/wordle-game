@@ -22,6 +22,7 @@ function GamePage() {
 	const [gameStarted, setGameStarted] = useState(false) //checks if game started
 	const [gameEnded, setGameEnded] = useState(false) // checks if game ended
 	const [startTime, setStartTime] = useState(null) // tack start time of game
+	const [endTime, setEndTime] = useState("")
 
 	// const theme = useTheme()
 
@@ -47,8 +48,7 @@ function GamePage() {
 			const data = await response.json()
 
 			if (response.ok) {
-				setTargetWord(data.word) //spara ordet
-				console.log("word:", data.word)
+				setTargetWord(data.word)
 			} else {
 				throw new Error(`HTTP error! status: ${response.status}`)
 			}
@@ -84,8 +84,10 @@ function GamePage() {
 
 		if (userGuess === targetWord) {
 			//TODO fix later
+			setEndTime(new Date().getTime())
+
 			setGameEnded(true) // Game ended
-			alert("Grattis! Du gissade rätt ord!")
+			// alert("Grattis! Du gissade rätt ord!")
 		}
 	}
 
@@ -125,11 +127,9 @@ function GamePage() {
 	const handleSubmitHighscore = async (e) => {
 		e.preventDefault()
 		try {
-			const endTime = new Date().getTime()
 			const timeTaken = (endTime - startTime) / 1000 //calc time taken in seconds
 
 			const numGuesses = guesses.length
-			console.log(repeatingChar + "before sending to highscore")
 			const response = await fetch("/api/highscores", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
@@ -144,9 +144,6 @@ function GamePage() {
 
 			const data = await response.json()
 			if (response.ok) {
-				console.log("Highscore submitted:", data)
-				//TODO fix later
-				alert("Tack för att du spelade!")
 				setGameStarted(false)
 				setGameEnded(false)
 				setGuesses([])

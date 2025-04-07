@@ -8,11 +8,11 @@ export const submitGuess = (req, res) => {
 	// Controller logic here
 }
 
+const getWords =
+	"https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt"
 const fetchWordList = async function () {
 	try {
-		const respons = await fetch(
-			"https://raw.githubusercontent.com/dwyl/english-words/master/words_alpha.txt"
-		)
+		const respons = await fetch(getWords)
 		if (respons.ok) {
 			const data = await respons.text()
 			const words = data.split("\n").map((word) => word.trim())
