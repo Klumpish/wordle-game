@@ -3,6 +3,7 @@ import path from "path"
 import cors from "cors"
 import gameRoutes from "./routes/gameRoutes.js"
 import highscoreRoutes from "./routes/highscoreRoutes.js"
+import connectDB from "./db.js"
 
 const app = express()
 const PORT = 5080
@@ -45,6 +46,7 @@ if (isProduction) {
 		res.sendFile(path.join(staticPath, "index.html"))
 	})
 }
+connectDB()
 
 app.listen(PORT, () => {
 	console.log(

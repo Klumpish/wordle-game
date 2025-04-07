@@ -75,6 +75,10 @@
 
     1. npm install @mui/material @emotion/react @emotion/styled
 
+## database MongoDB atlas (cloud)
+
+- tested so that i can do postman get and post to the database.
+
 ## Problems
 
 - config of vite and express server. #FIXED

@@ -1,49 +1,23 @@
-import fs from "fs"
-import path from "path"
-
-const highscoreFilePath = path.join(process.cwd(), "data", "highscores.json")
-
-// read highscore from fiel
-
-const readHighscores = () => {
-	try {
-		const data = fs.readFileSync(highscoreFilePath, "utf-8")
-		return JSON.parse(data)
-	} catch (error) {
-		console.error("Error reading highscores file:", error)
-		return []
-	}
-}
-
-// write highscore to file
-const writeHighscores = (highscores) => {
-	try {
-		fs.writeFileSync(highscoreFilePath, JSON.stringify(highscores, null, 2))
-	} catch (error) {
-		console.error("Error writing to highscores file:", error)
-	}
-}
+import Highscore from "../models/Highscore.js"
 
 // submit new highscore
-export const submitHighscore = (req, res) => {
+export const submitHighscore = async (req, res) => {
 	try {
 		const { name, time, guesses, wordLength, repeatingChar } = req.body
 
-		//TODO add lgic to save highscore to database
-		const newHighScore = { name, time, guesses, wordLength, repeatingChar }
-		const highscores = readHighscores()
+		const newHighScore = new Highscore({
+			name,
+			time,
+			guesses,
+			wordLength,
+			repeatingChar,
+		})
 
-		// add new highscore and sort by time
-		highscores.push(newHighScore)
-		highscores.sort((a, b) => a.time - b.time)
+		const savedHighscore = await newHighScore.save()
 
-		// save updated highscores to file
-		writeHighscores(highscores)
-
-		res.status(200).json({
+		res.status(201).json({
 			success: true,
-			message: "Highscore submitted successfully",
-			data: newHighScore,
+			data: savedHighscore,
 		})
 	} catch (error) {
 		console.error("Error submitting highscore:", error)
@@ -55,9 +29,9 @@ export const submitHighscore = (req, res) => {
 }
 
 // get all highscores
-export const getHighscores = (req, res) => {
+export const getHighscores = async (req, res) => {
 	try {
-		const highscores = readHighscores()
+		const highscores = await Highscore.find().sort({ time: 1 })
 		res.status(200).json({
 			success: true,
 			data: highscores,
@@ -71,23 +45,21 @@ export const getHighscores = (req, res) => {
 	}
 }
 
-export const getPaginatedHighscores = (req, res) => {
+export const getPaginatedHighscores = async (req, res) => {
 	try {
-		// extract page and pageSize
-		const { page = 1, pageSize = 10 } = req.query
-		const highscores = readHighscores()
+		const page = parseInt(req.query.page) || 1
+		const pageSize = parseInt(req.query.pageSize) || 10
 
-		const startIndex = (page - 1) * pageSize
-		const endIndex = startIndex + Number(pageSize)
-
-		// slice data for pagination
-		const paginatedData = highscores.slice(startIndex, endIndex)
-		const totalPages = Math.ceil(highscores.length / pageSize)
+		const total = await Highscore.countDocuments()
+		const highscores = await Highscore.find()
+			.sort({ time: 1 })
+			.skip((page - 1) * pageSize)
+			.limit(pageSize)
 
 		res.status(200).json({
 			success: true,
-			data: paginatedData,
-			totalPages,
+			data: highscores,
+			totalPages: Math.ceil(total / pageSize),
 		})
 	} catch (error) {
 		console.log("Error fetching paginated highscores:", error)
