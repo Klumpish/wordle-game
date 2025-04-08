@@ -18,11 +18,20 @@ app.use((req, res, next) => {
 	next()
 })
 
+app.set("view engine", "ejs")
+app.set("views", "./views")
+
+// app.get("/highscores", async (req, res) => {
+// 	res.render("highscore")
+// })
+
 // Enable CORS in development
 if (!isProduction) {
 	app.use(
 		cors({
 			origin: "http://localhost:5173", // Allow Vite dev server
+			methods: ["GET", "POST"],
+			credentials: true,
 		})
 	)
 }

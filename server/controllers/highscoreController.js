@@ -32,10 +32,12 @@ export const submitHighscore = async (req, res) => {
 export const getHighscores = async (req, res) => {
 	try {
 		const highscores = await Highscore.find().sort({ time: 1 })
-		res.status(200).json({
-			success: true,
-			data: highscores,
-		})
+
+		res.render("highscore", { highscores })
+		// res.status(200).json({
+		// 	success: true,
+		// 	data: highscores,
+		// })
 	} catch (error) {
 		console.error("Error getting highscores:", error)
 		res.status(500).json({
