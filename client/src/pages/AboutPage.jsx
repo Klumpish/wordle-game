@@ -3,7 +3,9 @@ import { Container, Typography, Box } from "@mui/material"
 
 function AboutPage() {
 	return (
-		<Container maxWidth="md">
+		<Container
+			maxWidth="md"
+			sx={{ mb: 5 }}>
 			<Box mt={4}>
 				<Typography
 					variant="h3"

@@ -22,10 +22,6 @@ function App() {
 								path="/about"
 								element={<AboutPage />}
 							/>
-							<Route
-								path="/highscores"
-								element={<HighscoresPage />}
-							/>
 						</Routes>
 					</main>
 				</Router>

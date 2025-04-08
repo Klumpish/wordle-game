@@ -9,7 +9,6 @@ import {
 	TextField,
 	Typography,
 } from "@mui/material"
-// import { useTheme } from "@emotion/react"
 import { useState } from "react"
 
 function GamePage() {
@@ -21,16 +20,13 @@ function GamePage() {
 	const [userName, setUserName] = useState("") // user name
 	const [gameStarted, setGameStarted] = useState(false) //checks if game started
 	const [gameEnded, setGameEnded] = useState(false) // checks if game ended
-	const [startTime, setStartTime] = useState(null) // tack start time of game
-	const [endTime, setEndTime] = useState("")
-
-	// const theme = useTheme()
+	const [startTime, setStartTime] = useState(null) //  start time of game
+	const [endTime, setEndTime] = useState("") // end time of the game
 
 	const handleChange = (event) => {
 		setWordLength(event.target.value)
 	}
 
-	//
 	const handleStartGame = async (e) => {
 		e.preventDefault()
 		try {
@@ -66,8 +62,7 @@ function GamePage() {
 	const handleGuessSubmit = (e) => {
 		e.preventDefault()
 		if (userGuess.length !== targetWord.length) {
-			//TODO use for right now...
-			alert(`Gissningen måste vara ${targetWord.length} bokstäver långt.`)
+			alert(`the Word your guessing has to be ${targetWord.length} letters.`)
 			return
 		}
 
@@ -86,7 +81,6 @@ function GamePage() {
 			setEndTime(new Date().getTime())
 
 			setGameEnded(true) // Game ended
-			// alert("Grattis! Du gissade rätt ord!")
 		}
 	}
 
@@ -99,7 +93,7 @@ function GamePage() {
 			targetLetterCount[letter] = (targetLetterCount[letter] || 0) + 1
 		}
 
-		//TODO first pass: check for correct letters in the correct position GREEN
+		// first pass: check for correct letters in the correct position GREEN
 		for (let i = 0; i < guess.length; i++) {
 			if (guess[i] === target[i]) {
 				result[i] = "green" //correct
@@ -109,7 +103,7 @@ function GamePage() {
 			}
 		}
 
-		//TODO second pass check for misplaced letters YELLOW
+		// second pass check for misplaced letters YELLOW
 		for (let i = 0; i < guess.length; i++) {
 			if (result[i] === null && targetLetterCount[guess[i]] > 0) {
 				result[i] = "yellow" //wrong positon right letter
@@ -169,8 +163,8 @@ function GamePage() {
 				<>
 					<Typography
 						variant="h4"
-						sx={{ mt: 2 }}>
-						Välj inställningarna för ditt spel
+						sx={{ mt: 2, mb: 3 }}>
+						Pick game options
 					</Typography>
 					<form
 						onSubmit={handleStartGame}
@@ -183,7 +177,7 @@ function GamePage() {
 							fullWidth
 							required
 							sx={{ maxWidth: 400, minWidth: 100, mb: 2 }}>
-							<InputLabel id="wordLength">Antal Bokstäver</InputLabel>
+							<InputLabel id="wordLength">Number of letters</InputLabel>
 							<Select
 								labelId="wordLength"
 								id="wordLengthSelect"
@@ -201,9 +195,7 @@ function GamePage() {
 							fullWidth
 							required
 							sx={{ maxWidth: 400, minWidth: 100, mb: 2 }}>
-							<InputLabel id="repeatingChars">
-								Flera av samma bokstav
-							</InputLabel>
+							<InputLabel id="repeatingChars">Only unique letters</InputLabel>
 							<Select
 								labelId="repeatingChars"
 								id="repeatingCharsSelect"

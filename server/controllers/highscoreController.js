@@ -34,10 +34,6 @@ export const getHighscores = async (req, res) => {
 		const highscores = await Highscore.find().sort({ time: 1 })
 
 		return highscores
-		// res.status(200).json({
-		// 	success: true,
-		// 	data: highscores,
-		// })
 	} catch (error) {
 		console.error("Error getting highscores:", error)
 		throw error
