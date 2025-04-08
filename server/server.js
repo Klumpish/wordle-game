@@ -4,6 +4,7 @@ import cors from "cors"
 import gameRoutes from "./routes/gameRoutes.js"
 import highscoreRoutes from "./routes/highscoreRoutes.js"
 import connectDB from "./db.js"
+import { getPaginatedHighscores } from "./controllers/highscoreController.js"
 
 const app = express()
 const PORT = 5080
@@ -19,7 +20,8 @@ app.use((req, res, next) => {
 })
 
 app.set("view engine", "ejs")
-app.set("views", "./views")
+// console.log(path.join(process.cwd(), "views"))
+app.set("views", path.join(process.cwd(), "views"))
 
 // app.get("/highscores", async (req, res) => {
 // 	res.render("highscore")
@@ -39,6 +41,29 @@ if (!isProduction) {
 // API routes
 app.use("/api/game", gameRoutes)
 app.use("/api/highscores", highscoreRoutes)
+
+app.get("/highscores", async (req, res) => {
+	const currentPage = parseInt(req.query.page) || 1
+	const itemsPerPage = 10
+
+	try {
+		// Get paginated highscores
+		const response = await getPaginatedHighscores(currentPage, itemsPerPage)
+		const highscores = response.data
+		const totalPages = response.totalPages
+
+		// Render the highscore page with data
+		res.render("highscore", {
+			highscores,
+			currentPage,
+			totalPages,
+			itemsPerPage,
+		})
+	} catch (error) {
+		console.error("Error fetching highscores:", error)
+		res.status(500).send("Error fetching highscores")
+	}
+})
 
 // In development, redirect to Vite server
 if (!isProduction) {
