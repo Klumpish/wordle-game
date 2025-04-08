@@ -83,7 +83,6 @@ function GamePage() {
 		setUserGuess("") //clear guess input
 
 		if (userGuess === targetWord) {
-			//TODO fix later
 			setEndTime(new Date().getTime())
 
 			setGameEnded(true) // Game ended
