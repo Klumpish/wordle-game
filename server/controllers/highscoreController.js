@@ -32,40 +32,28 @@ export const submitHighscore = async (req, res) => {
 export const getHighscores = async (req, res) => {
 	try {
 		const highscores = await Highscore.find().sort({ time: 1 })
-		res.status(200).json({
-			success: true,
-			data: highscores,
-		})
+
+		return highscores
 	} catch (error) {
 		console.error("Error getting highscores:", error)
-		res.status(500).json({
-			success: false,
-			message: error.message,
-		})
+		throw error
 	}
 }
 
-export const getPaginatedHighscores = async (req, res) => {
+export const getPaginatedHighscores = async (page, pageSize) => {
 	try {
-		const page = parseInt(req.query.page) || 1
-		const pageSize = parseInt(req.query.pageSize) || 10
-
 		const total = await Highscore.countDocuments()
 		const highscores = await Highscore.find()
 			.sort({ time: 1 })
 			.skip((page - 1) * pageSize)
 			.limit(pageSize)
 
-		res.status(200).json({
-			success: true,
+		return {
 			data: highscores,
 			totalPages: Math.ceil(total / pageSize),
-		})
+		}
 	} catch (error) {
-		console.log("Error fetching paginated highscores:", error)
-		res.status(500).json({
-			success: false,
-			message: "Internal Server Error",
-		})
+		console.error("Error fetching paginated highscores:", error)
+		throw new Error("Error fetching highscores")
 	}
 }

@@ -24,6 +24,7 @@ const StyledNavLink = styled(NavLink)(({ theme }) => ({
 	textDecoration: "none",
 	padding: theme.spacing(1, 2),
 	borderRadius: theme.shape.borderRadius,
+
 	"&.active": {
 		backgroundColor: theme.palette.primary.dark,
 		fontWeight: "bold",
@@ -31,6 +32,29 @@ const StyledNavLink = styled(NavLink)(({ theme }) => ({
 	"&:hover": {
 		backgroundColor: theme.palette.primary.light,
 	},
+	display: "flex",
+	alignItems: "center",
+	gap: theme.spacing(1),
+}))
+
+const StyledAnchor = styled("a")(({ theme }) => ({
+	color: theme.palette.common.white,
+	textDecoration: "none",
+	padding: theme.spacing(1, 2),
+	borderRadius: theme.shape.borderRadius,
+
+	"&.active": {
+		backgroundColor: theme.palette.primary.dark,
+		fontWeight: "bold",
+	},
+	"&:hover": {
+		backgroundColor: theme.palette.primary.light,
+	},
+	display: "flex",
+	alignItems: "center",
+	gap: theme.spacing(1),
+	width: "100%",
+	textAlign: "center",
 }))
 
 function Navigation() {
@@ -45,8 +69,13 @@ function Navigation() {
 	// navigation items
 	const navItems = [
 		{ text: "Game", to: "/", end: true, icon: <SportsEsportsIcon /> },
-		{ text: "About", to: "/about", icon: <InfoOutlineIcon /> },
-		{ text: "High Score", to: "/highscores", icon: <EmojiFlagsIcon /> },
+		{ text: "Info", to: "/about", icon: <InfoOutlineIcon /> },
+		{
+			text: "High Score",
+			to: "/highscores",
+			icon: <EmojiFlagsIcon />,
+			ssr: true,
+		},
 	]
 
 	// Menu component for mobile
@@ -64,14 +93,27 @@ function Navigation() {
 					<ListItem
 						key={item.text}
 						disablePadding>
-						<StyledNavLink
-							to={item.to}
-							end={item.end}
-							className={({ isActive }) => (isActive ? "active" : "")}
-							sx={{ width: "100%", textAlign: "center" }}>
-							{item.icon}
-							{item.text}
-						</StyledNavLink>
+						{item.ssr ? (
+							<StyledAnchor
+								href={item.to}
+								className={window.location.pathname === item.to ? "active" : ""}
+								onClick={(e) => {
+									e.preventDefault()
+									window.location.href = item.to
+								}}>
+								{item.icon}
+								{item.text}
+							</StyledAnchor>
+						) : (
+							<StyledNavLink
+								to={item.to}
+								end={item.end}
+								className={({ isActive }) => (isActive ? "active" : "")}
+								sx={{ width: "100%", textAlign: "center" }}>
+								{item.icon}
+								{item.text}
+							</StyledNavLink>
+						)}
 					</ListItem>
 				))}
 			</List>
@@ -106,13 +148,20 @@ function Navigation() {
 							<ListItem
 								key={item.text}
 								disablePadding>
-								<StyledNavLink
-									to={item.to}
-									end={item.end}
-									className={({ isActive }) => (isActive ? "active" : "")}>
-									{item.icon}
-									{item.text}
-								</StyledNavLink>
+								{item.ssr ? (
+									<StyledAnchor href={item.to}>
+										{item.icon}
+										{item.text}
+									</StyledAnchor>
+								) : (
+									<StyledNavLink
+										to={item.to}
+										end={item.end}
+										className={({ isActive }) => (isActive ? "active" : "")}>
+										{item.icon}
+										{item.text}
+									</StyledNavLink>
+								)}
 							</ListItem>
 						))}
 					</List>
@@ -132,33 +181,6 @@ function Navigation() {
 				</Drawer>
 			</Toolbar>
 		</AppBar>
-		/* 
-		<nav className="main-nav">
-			<ul>
-				<li>
-					<NavLink
-						to="/"
-						end
-						className={({ isActive }) => (isActive ? "active" : "")}>
-						Game
-					</NavLink>
-				</li>
-				<li>
-					<NavLink
-						to="/about"
-						className={({ isActive }) => (isActive ? "active" : "")}>
-						About
-					</NavLink>
-				</li>
-				<li>
-					<NavLink
-						to="/highscores"
-						className={({ isActive }) => (isActive ? "active" : "")}>
-						High Score
-					</NavLink>
-				</li>
-			</ul>
-		</nav> */
 	)
 }
 

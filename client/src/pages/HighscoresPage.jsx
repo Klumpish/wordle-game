@@ -43,8 +43,8 @@ function HighscorePage() {
 		setCurrentPage(value)
 	}
 
-	const startIndex = (currentPage - 1) * itemsPerPage
-	const endIndex = startIndex + itemsPerPage
+	// const startIndex = (currentPage - 1) * itemsPerPage
+	// const endIndex = startIndex + itemsPerPage
 
 	return (
 		<Container>

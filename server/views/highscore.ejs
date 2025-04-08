@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Highscores</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mui/material@5.4.4/dist/material-ui.min.css">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: rgb(225, 190, 231);
+        }
+        .container {
+            padding: 20px;
+        }
+        .navbar {
+            background-color: #9c27b0;
+            color: white;
+            padding: 10px;
+        }
+        .navbar a {
+            color: white;
+            margin-right: 20px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #9c27b0;
+            color: white;
+        }
+        .pagination {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .pagination a {
+            margin: 0 5px;
+            padding: 5px 10px;
+            background-color: #9c27b0;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .pagination a:hover {
+            background-color: pink;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<div class="navbar">
+    <a href="/">Game</a>
+    <a href="/about">Info</a>
+    <a href="/highscores">Highscores</a>
+</div>
+
+<!-- Main Content -->
+<div class="container">
+    <h2>Highscores</h2>
+
+    <!-- Table of Highscores -->
+    <table>
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Name</th>
+                <th>Time (s)</th>
+                <th>Guesses</th>
+                <th>Word Length</th>
+                <th>Repeating Characters</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% highscores.forEach((highscore, index) => { %>
+                <tr>
+                    <td><%= (currentPage - 1) * itemsPerPage + index + 1 %></td>
+                    <td><%= highscore.name %></td>
+                    <td><%= highscore.time %></td>
+                    <td><%= highscore.guesses %></td>
+                    <td><%= highscore.wordLength %></td>
+                    <td><%= highscore.repeatingChar ? "Yes" : "No" %></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+
+    <!-- Pagination Controls -->
+    <div class="pagination">
+        <% if (currentPage > 1) { %>
+            <a href="/highscores?page=<%= currentPage - 1 %>">Previous</a>
+        <% } %>
+        <% for (let i = 1; i <= totalPages; i++) { %>
+            <a href="/highscores?page=<%= i %>"><%= i %></a>
+        <% } %>
+        <% if (currentPage < totalPages) { %>
+            <a href="/highscores?page=<%= currentPage + 1 %>">Next</a>
+        <% } %>
+    </div>
+</div>
+
+</body>
+</html>
