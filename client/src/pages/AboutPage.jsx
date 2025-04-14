@@ -43,16 +43,15 @@ function AboutPage() {
 					The goal of this project is to provide a fun and interactive word
 					guessing game while demonstrating full-stack development skills. The
 					application includes:
-					<ul>
-						<li>
-							A responsive frontend built with React and styled using
-							Material-UI
-						</li>
-						<li>A backend API powered by Express.js</li>
-						<li>Highscore tracking stored in MongoDB Atlas</li>
-						<li>Server-side pagination for efficient data handling</li>
-					</ul>
 				</Typography>
+				<ul style={{ color: "black", fontSize: "1.5rem" }}>
+					<li>
+						A responsive frontend built with React and styled using Material-UI
+					</li>
+					<li>A backend API powered by Express.js</li>
+					<li>Highscore tracking stored in MongoDB Atlas</li>
+					<li>Server-side pagination for efficient data handling</li>
+				</ul>
 				<Typography
 					variant="body1"
 					paragraph
